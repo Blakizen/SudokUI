@@ -10,8 +10,8 @@
 //
 // $(element).trigger('log', ['myevent', {key1: val1, key2: val2}]);
 
-var ENABLE_NETWORK_LOGGING = false; // Controls network logging.
-var ENABLE_CONSOLE_LOGGING = true; // Controls console logging.
+var ENABLE_NETWORK_LOGGING = true; // Controls network logging.
+var ENABLE_CONSOLE_LOGGING = false; // Controls console logging.
 var LOG_VERSION = 'B';             // Labels every entry with version: "A".
 
 // These event types are intercepted for logging before jQuery handlers.

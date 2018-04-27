@@ -50,6 +50,7 @@ var curnumber = null;                  // currently selected number.
 
 Util.events(document, {
   "DOMContentLoaded": function() {
+    setTimeout(makelisteners, 0.1);
     var sinit;
     // Generate static HTML such as the number palette.
     setup_screen();
@@ -315,7 +316,6 @@ function handglyph(text) {
 
 Util.events(document, {
   "click": function(evt) {
-    //console.log(evt);
 		var select = evt.target.closest("td.numberkey-cell");
 		if (select) {
       // Clicks in the number palette.
@@ -335,7 +335,6 @@ Util.events(document, {
 // Suoku board interactions
 /////////////////////////////////////////////////////////////////////////////
 /*inp.addEventListener('input', function(evt) {
-  console.log("yo", inp.value);
   var detail = {name: 'change', info: {
     content: inp.value,
     seed: currentstate().seed
@@ -567,27 +566,28 @@ function flippage(skip) {
 
 
 function makelisteners() {
-  console.log(Util.all('.sudoku-in'));
   for(var i = 0; i < Util.all('.sudoku-in').length; i++) {
     var inp = Util.all('.sudoku-in')[i];
     //console.log("inp:",inp);
     inp.addEventListener("input", function(evt) {
         //console.log(evt);
+        var detail = {name: 'change', info: {
+          content: evt.target.value,
+          seed: currentstate().seed
+        }};
+        document.dispatchEvent(new CustomEvent("log", {detail}));
 
         var square = evt.target;
         //evt.preventDefault();
         hidepopups();
         if (square.value.match("^[1-4]$")) {
-          console.log('match!')
           var pos = parseInt(square.id.substr(2));
           var state = currentstate();
           // Ignore the click if the square is given in the puzzle.
           if (state.puzzle[pos] !== null) return;
           // Internally we store "1" as "0".
           var num = parseInt(square.value)-1;
-          console.log(num);
           if (square.value = '' || isNaN(num)) {
-            console.log("ErASE");
 
             // Erase this square.
             state.answer[pos] = null;
@@ -599,7 +599,6 @@ function makelisteners() {
           } else {
             // Set the number
             state.answer[pos] = num;
-            console.log(state.answer);
             state.work[pos] = 0;
             // Update elapsed time immediately, to avoid flicker upon victory.
             if (victorious(state)) {
